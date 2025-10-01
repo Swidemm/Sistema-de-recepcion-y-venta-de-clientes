@@ -1,0 +1,715 @@
+/*
+ * Main stylesheet for the FIAT credit system. This file defines
+ * the look and feel of the entire application, including
+ * typography, colours, layout and components. A simple
+ * palette derived from the official FIAT branding is used
+ * throughout to provide a professional appearance. Dark mode
+ * support is included via CSS custom properties that are
+ * overridden when the `.dark-mode` class is applied on the
+ * `<body>` element.
+ */
+
+/* Base colour palette (light mode) */
+:root {
+  --primary-color: #96172e;    /* Fiat Merlot */
+  --secondary-color: #6d2d41;  /* Fiat Finn */
+  --background: #f8f8f8;
+  --panel-background: #ffffff;
+  --border-color: #e0e0e0;
+  --text-color: #333333;
+  --muted-text: #666666;
+}
+
+/* Dark mode overrides. When `.dark-mode` is added to the <body>,
+ * these variables redefine the colours throughout the app. */
+.dark-mode {
+  --primary-color: #ba2745;
+  --secondary-color: #8c1f33;
+  --background: #1d1d1d;
+  --panel-background: #2b2b2b;
+  --border-color: #444444;
+  --text-color: #e6e6e6;
+  --muted-text: #aaaaaa;
+}
+
+/* Global reset */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Arial", sans-serif;
+  background-color: var(--background);
+  color: var(--text-color);
+  line-height: 1.5;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Navigation bar */
+nav {
+  /* Use a subtle gradient based on the FIAT palette for the navigation bar */
+  background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+  color: #ffffff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1.25rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+nav .logo {
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  /* Display logo as flex container to align image and text */
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+/* FIAT logo styling */
+nav .logo-img {
+  /* Increase the logo height for improved visibility in the header */
+  height: 42px;
+  width: auto;
+  display: block;
+  /* invert colours so the logo appears white on dark nav bar */
+  filter: brightness(0) invert(1);
+}
+
+@media (max-width: 768px) {
+  nav .logo-img {
+    /* Slightly enlarge the logo on mobile as well */
+    height: 32px;
+  }
+}
+
+nav .nav-links {
+  list-style: none;
+  display: flex;
+  gap: 1.5rem;
+  margin: 0;
+  padding: 0;
+}
+
+nav .nav-links li a {
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.95rem;
+  padding: 0.4rem 0.6rem;
+  border-radius: 4px;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+nav .nav-links li a:hover,
+nav .nav-links li a.active {
+  background-color: rgba(255, 255, 255, 0.15);
+  border-bottom: 2px solid #ffffff;
+}
+
+/* Theme switch container inside navigation */
+.theme-switch {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+  cursor: pointer;
+}
+.theme-switch input {
+  display: none;
+}
+.theme-switch .slider {
+  width: 44px;
+  height: 22px;
+  border-radius: 22px;
+  background-color: var(--border-color);
+  position: relative;
+  transition: background-color 0.3s ease;
+}
+.theme-switch .slider::before {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background-color: var(--primary-color);
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+.theme-switch input:checked + .slider {
+  background-color: var(--border-color);
+}
+.theme-switch input:checked + .slider::before {
+  transform: translateX(22px);
+  background-color: var(--secondary-color);
+}
+
+/* Main layout */
+main {
+  max-width: 1100px;
+  margin: 3rem auto;
+  padding: 0 1rem;
+}
+
+h2 {
+  margin-top: 0;
+  color: var(--primary-color);
+  font-size: 1.8rem;
+  border-bottom: 3px solid var(--secondary-color);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Container for the two panels */
+.form-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  width: 100%;
+}
+
+/* Panel style */
+.panel {
+  background-color: var(--panel-background);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 1.4rem;
+  /* Enhance the shadow for a more card‑like feel */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  opacity: 1;
+  transition: opacity 0.4s ease;
+}
+
+/* Fade in/out utility classes for micro-interactions */
+.fade-out {
+  opacity: 0;
+}
+.fade-in {
+  opacity: 1;
+}
+
+/* ------------------------------------------------------------------ */
+/* Comparison modal styles                                              */
+/*
+ * The compare modal overlays the application and contains two panels
+ * that display snapshot data side by side. A translucent backdrop
+ * darkens the background behind the modal card. A toolbar at the
+ * bottom provides controls for loading and deleting saved snapshots
+ * and exporting the comparison to PDF.
+ */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
+  display: none;
+}
+
+.modal-backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.modal-card {
+  position: relative;
+  max-width: 90%;
+  margin: 5rem auto;
+  background-color: var(--panel-background);
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  z-index: 1001;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.modal-body {
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.compare-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+/* Small tables used inside comparison panels */
+.mini-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 0.5rem;
+}
+
+.mini-table th,
+.mini-table td {
+  border: 1px solid var(--border-color);
+  padding: 0.4rem 0.6rem;
+  font-size: 0.85rem;
+}
+
+.mini-table th {
+  background-color: var(--secondary-color);
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.mini-table td {
+  background-color: var(--panel-background);
+  color: var(--text-color);
+}
+
+.snapshot-toolbar {
+  margin-top: 1rem;
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+/* Card styling inside the comparison modal */
+.compare-card {
+  background-color: var(--panel-background);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+.compare-card h4 {
+  margin-top: 0;
+  color: var(--secondary-color);
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+.compare-card p {
+  margin: 0.3rem 0;
+  font-size: 0.9rem;
+  color: var(--text-color);
+}
+
+/* Print override for comparison PDF export */
+@media print {
+  #compare-modal {
+    display: none !important;
+  }
+  #compare-print {
+    display: block !important;
+  }
+}
+
+/* Spinner for redirect modal */
+.redirect-spinner {
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #198754;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.panel h3 {
+  margin-top: 0;
+  color: var(--secondary-color);
+  font-size: 1.3rem;
+  margin-bottom: 0.8rem;
+  font-weight: 600;
+}
+
+.panel label {
+  display: block;
+  margin-top: 0.5rem;
+  font-weight: 600;
+}
+
+.panel select,
+.panel input {
+  width: 100%;
+  margin-top: 0.3rem;
+  padding: 0.45rem 0.5rem;
+  font-size: 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  background-color: var(--panel-background);
+  color: var(--text-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.panel select:disabled,
+.panel input:disabled {
+  background-color: #f0f0f0;
+}
+
+.value-display {
+  display: block;
+  margin-top: 0.3rem;
+  font-size: 1rem;
+  color: var(--secondary-color);
+  font-weight: 600;
+}
+
+/* Table styling */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 0.5rem;
+}
+
+table th,
+table td {
+  border: 1px solid var(--border-color);
+  padding: 0.4rem 0.6rem;
+  text-align: left;
+  font-size: 0.95rem;
+}
+
+table th {
+  background-color: var(--secondary-color);
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+table td {
+  background-color: var(--panel-background);
+  font-size: 0.9rem;
+  color: var(--text-color);
+}
+
+/* Final total styling */
+.final-total {
+  margin-top: 1.8rem;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  text-align: right;
+  padding: 0.5rem;
+  border-top: 2px solid var(--secondary-color);
+}
+
+/* Note at the bottom of bancario simulator */
+.final-note {
+  margin-top: 1.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--secondary-color);
+  text-align: right;
+  padding-top: 0.5rem;
+  border-top: 2px solid var(--border-color);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .form-container {
+    grid-template-columns: 1fr;
+  }
+  nav .nav-links {
+    gap: 0.75rem;
+  }
+  nav .logo {
+    font-size: 1.2rem;
+  }
+}
+
+/*
+ * Export button styling
+ *
+ * A dedicated wrapper ensures the buttons align neatly to the right of each
+ * simulator section. Buttons use the FIAT palette and provide subtle
+ * hover feedback to indicate interactivity. These styles are separate
+ * from the main panels so they can be hidden during printing.
+ */
+.export-wrapper {
+  margin-top: 1.5rem;
+  text-align: right;
+}
+
+.export-btn {
+  background-color: var(--secondary-color);
+  color: #ffffff;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.export-btn:hover {
+  background-color: var(--primary-color);
+}
+
+/* Tooltip styling. Any element with `.tooltip` will display its
+ * `data-tooltip` attribute when hovered. The tooltip box appears above
+ * the element and fades in/out smoothly. */
+.tooltip {
+  position: relative;
+  cursor: help;
+}
+
+.tooltip::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.8);
+  color: #ffffff;
+  padding: 0.4rem 0.6rem;
+  border-radius: 4px;
+  white-space: nowrap;
+  z-index: 1002;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.tooltip:hover::after {
+  opacity: 1;
+}
+
+/* Muted text helper. Used for small explanatory notes beneath labels. */
+.muted-text {
+  color: var(--muted-text);
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
+}
+
+/* ------------------------------------------------------------------ */
+/* Client onboarding styles                                             */
+/*
+ * When the application first loads or when a new client is requested,
+ * the client form is presented. It appears as a card centered in
+ * the main area. Once submitted, the form is hidden and a banner
+ * displays the captured client details along with a reset button.
+ */
+
+/* Banner that shows client information once loaded */
+#client-info-banner {
+  background-color: var(--panel-background);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  margin: 1rem auto;
+  padding: 0.8rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1100px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  color: var(--text-color);
+}
+#client-info-banner .client-info-content {
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+#client-info-banner #new-client-btn {
+  margin-left: 1rem;
+}
+
+/* Client form card */
+#client-form-section {
+  max-width: 700px;
+  margin: 2rem auto;
+  display: none;
+}
+.client-form-card {
+  background-color: var(--panel-background);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+.client-form-card h2 {
+  margin-top: 0;
+  color: var(--secondary-color);
+  font-size: 1.6rem;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem 2rem;
+  margin-bottom: 1.5rem;
+}
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+.form-group label {
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+}
+.form-group input {
+  padding: 0.45rem 0.5rem;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  font-size: 1rem;
+  background-color: var(--panel-background);
+  color: var(--text-color);
+}
+.error-message {
+  font-size: 0.8rem;
+  color: #c0392b;
+  margin-top: 0.2rem;
+  min-height: 1rem;
+}
+
+/* Personalised greeting inserted into result panels */
+.greeting {
+  font-size: 0.9rem;
+  color: var(--muted-text);
+  margin-bottom: 0.5rem;
+  font-style: italic;
+}
+/* Disabled save button styling */
+#client-save-btn[disabled] {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* Discount info styling: green text to highlight applied discounts */
+.discount-info {
+  color: #198754;
+  font-weight: 600;
+  margin-left: 0.5rem;
+}
+
+/* Bonifications container styling */
+.bonifications {
+  margin-top: 0.5rem;
+}
+.bonifications h4 {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--secondary-color);
+}
+#bonifications-list label {
+  display: block;
+  margin-top: 0.3rem;
+}
+
+/* When bonifications are randomly assigned, they are displayed as simple
+   paragraphs rather than labels/checkboxes.  Ensure they appear on
+   separate lines with similar spacing. */
+#bonifications-list p {
+  margin: 0.3rem 0 0 0;
+  font-size: 0.95rem;
+}
+
+/* Admin login modal specifics */
+#admin-login-modal .modal-card {
+  width: 100%;
+  max-width: 400px;
+}
+#admin-login-modal .form-group label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.2rem;
+}
+#admin-login-modal .form-group input {
+  width: 100%;
+  padding: 0.4rem 0.5rem;
+  font-size: 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  background: var(--panel-background);
+  color: var(--text-color);
+}
+
+/* Admin section styles */
+#admin-section {
+  background: var(--panel-background);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+}
+#admin-section h2 {
+  color: var(--primary-color);
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+#admin-section table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+#admin-section th,
+#admin-section td {
+  padding: 0.5rem;
+  border: 1px solid var(--border-color);
+  text-align: left;
+}
+#admin-section th {
+  background: var(--primary-color);
+  color: #ffffff;
+}
+#admin-section tbody tr:nth-child(even) td {
+  background: var(--background);
+}
+#admin-section tbody tr:nth-child(odd) td {
+  background: var(--panel-background);
+}
+
+/* Print styles
+ *
+ * When printing, only the section marked as `.print-active` should be
+ * visible. Navigation, export buttons and other sections are hidden to
+ * produce a clean, minimal PDF. Shadows are removed from panels and
+ * borders lightened for better legibility on paper. A white background
+ * ensures the printout isn't tinted with the application's background
+ * colour.
+ */
+@media print {
+  /* Hide navigation bar and export buttons */
+  nav,
+  .export-wrapper,
+  .theme-switch {
+    display: none !important;
+  }
+  /* Hide client banner, onboarding form, admin UI when printing */
+  #client-info-banner,
+  #client-form-section,
+  #admin-section,
+  #admin-login-modal {
+    display: none !important;
+  }
+  /* Hide all sections by default */
+  main > section {
+    display: none !important;
+  }
+  /* Show only the active section marked for printing */
+  .print-active {
+    display: block !important;
+  }
+  body {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+  }
+  /* Simplify panels for print */
+  .panel {
+    box-shadow: none !important;
+    border: 1px solid #cccccc !important;
+  }
+}

@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fiat Credit</title>
+    <!-- Main stylesheet -->
+    <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+    <!-- Navigation bar -->
+    <nav>
+        <div class="logo">
+            <!-- Logo image alongside the system name -->
+            <img src="assets/fiat-logo.svg" alt="FIAT" class="logo-img" />
+        <span>Fiat Credit – Sistema de Financiación</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#" id="nav-plan-ahorro" class="active">Plan de Ahorro</a></li>
+            <li><a href="#" id="nav-bancario">Financiación Bancaria</a></li>
+        </ul>
+        <!-- Dark/light mode toggle -->
+        <div class="theme-switch">
+            <input type="checkbox" id="theme-toggle" />
+            <span class="slider"></span>
+        </div>
+
+        <!-- Admin access button (visible only to admins) -->
+        <button id="admin-btn" class="export-btn" style="margin-left:1rem; display:none;">Admin</button>
+
+        <!-- Vendor clients button (visible only to vendors) -->
+        <button id="vendor-btn" class="export-btn" style="margin-left:1rem; display:none;">Mis clientes</button>
+        <!-- Logout button (visible when a user is logged in) -->
+        <button id="logout-btn" class="export-btn" style="margin-left:1rem; display:none;">Cerrar sesión</button>
+    </nav>
+
+    <!-- Client info banner (hidden until a client is loaded) -->
+    <div id="client-info-banner" style="display:none;">
+        <div class="client-info-content">
+            <!-- Client details will be injected here by the script -->
+        </div>
+        <button id="new-client-btn" class="export-btn">Nuevo cliente</button>
+    </div>
+
+    <!-- Client form section. This appears on first load or when creating a new client -->
+    <section id="client-form-section" style="display:none;">
+        <div class="client-form-card">
+            <h2>Datos del cliente</h2>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="client-first-name">Nombre *</label>
+                    <input type="text" id="client-first-name" required />
+                    <span id="client-first-name-error" class="error-message"></span>
+                </div>
+                <div class="form-group">
+                    <label for="client-last-name">Apellido *</label>
+                    <input type="text" id="client-last-name" required />
+                    <span id="client-last-name-error" class="error-message"></span>
+                </div>
+                <div class="form-group">
+                    <label for="client-dni">DNI *</label>
+                    <input type="text" id="client-dni" required pattern="\d{7,10}" />
+                    <span id="client-dni-error" class="error-message"></span>
+                </div>
+                <div class="form-group">
+                    <label for="client-localidad">Localidad *</label>
+                    <input type="text" id="client-localidad" required />
+                    <span id="client-localidad-error" class="error-message"></span>
+                </div>
+                <div class="form-group">
+                    <label for="client-telefono">Número de teléfono</label>
+                    <input type="tel" id="client-telefono" />
+                    <span id="client-telefono-error" class="error-message"></span>
+                </div>
+                <div class="form-group">
+                    <label for="client-email">Correo electrónico</label>
+                    <input type="email" id="client-email" />
+                    <span id="client-email-error" class="error-message"></span>
+                </div>
+            </div>
+            <button id="client-save-btn" class="export-btn" disabled>Guardar y continuar</button>
+        </div>
+    </section>
+
+    <main>
+        <!-- Plan de Ahorro section -->
+        <section id="plan-ahorro-section">
+            <h2>Plan de Ahorro</h2>
+            <div class="form-container">
+                <!-- Left panel: inputs and results -->
+                <div class="panel" id="input-panel">
+                    <h3>Selección</h3>
+                    <label for="model-plan-select">Modelo + Plan</label>
+                    <select id="model-plan-select"></select>
+
+                    <h3>Gastos</h3>
+                    <label id="gastos-label">Gastos de retiro (12% del valor)</label>
+                    <span id="gastos-retiro-display" class="value-display">-</span>
+
+                    <h3>Adjudicación</h3>
+                    <label for="quota-select">Elegir cuota (solo válidas)</label>
+                    <select id="quota-select"></select>
+                    <label>% adjudicación</label>
+                    <span id="adjudication-percentage" class="value-display">-</span>
+                    <label>Valor de adjudicación ($)</label>
+                    <span id="adjudication-value" class="value-display">-</span>
+                    
+                    <!-- Financing option for adjudication (shown only for cuota 4 or 6) -->
+                    <div id="finance-adjudication-container" style="display:none; margin-top: 0.5rem;">
+                        <label class="finance-label" style="display:flex; align-items:center; gap:0.3rem;">
+                            <input type="checkbox" id="finance-adjudication-checkbox" />
+                            Financiar adjudicación en cuotas
+                        </label>
+                        <div id="finance-adjudication-note" class="muted-text" style="margin-top:0.2rem;">
+                            SE REQUIERE UN BUEN COMPORTAMIENTO DE PAGO EN TIEMPO Y FORMA.
+                        </div>
+                        <!-- This displays the per‑cuota financed adjudication amount when checked -->
+                        <div id="financed-adjudication-info" class="value-display" style="display:none; margin-top:0.2rem;"></div>
+                    </div>
+
+                    <!-- Inversión inicial note with discount support -->
+                    <h3>Inversión inicial</h3>
+                    <span id="initial-investment" class="value-display">$ 1.350.000</span>
+                    <span id="investment-discount-info" class="discount-info" style="display:none;"></span>
+                    <div class="muted-text">Incluye primera cuota, reserva, gastos administrativos y alta de carpeta.</div>
+                    <!-- Bonifications list (hidden by default) -->
+                    <div id="bonifications-container" class="bonifications" style="display:none;">
+                        <h4>Bonificaciones</h4>
+                        <div id="bonifications-list"></div>
+                    </div>
+                </div>
+
+                <!-- Right panel: display plan values -->
+                <div class="panel" id="values-panel">
+                    <h3>Valores del Plan</h3>
+                    <!-- Greeting for Plan de Ahorro personalised with client name. Will be filled dynamically -->
+                    <div id="ahorro-greeting" class="greeting" style="display:none;"></div>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td><span class="tooltip" data-tooltip="Valor Móvil: precio base del vehículo en el plan.">Valor Móvil</span></td>
+                                <td id="valor-movil">-</td>
+                            </tr>
+                            <tr>
+                                <td><span class="tooltip" data-tooltip="Cuota Pura: alícuota base sin gastos ni recargos.">Cuota Pura</span></td>
+                                <td id="cuota-pura">-</td>
+                            </tr>
+                            <!--
+                            Removed individual cuota rows from the "Valores del Plan" table.
+                            The tranche breakdown is presented in the separate Esquema de Cuotas table below.
+                            -->
+                        </tbody>
+                    </table>
+
+                    <h3>Esquema de Cuotas</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Tramo</th>
+                                <th>Importe</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Cuotas 2–12</td>
+                                <td id="scheme-2-12">-</td>
+                            </tr>
+                            <tr>
+                                <td>Cuotas 13–18</td>
+                                <td id="scheme-13-18">-</td>
+                            </tr>
+                            <tr>
+                                <td>Cuotas 19–84</td>
+                                <td id="scheme-19-84">-</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="final-total">
+                        FINAL PUESTA EN CALLE: <span id="final-puesta-en-calle">-</span>
+                    </div>
+                    <!-- Preapproval countdown and follow‑up action.  This section is shown when
+                         the financing preapproval is granted.  It contains a green button
+                         that directs the user to continuar con la solicitud and a red
+                         countdown timer.  Hidden by default. -->
+                    <div id="preapproval-section" style="display:none; margin-top:1rem; text-align:right;">
+                        <button id="continue-application-btn" class="export-btn" style="background-color:#198754; border-color:#198754; margin-bottom:0.5rem;">
+                            Continuar con la solicitud
+                        </button>
+                        <!-- Inline timer below the final cost: enlarged for emphasis -->
+                        <div id="inline-preapproval-timer" style="font-weight:700; color:#c0392b; font-size:1.6rem;"></div>
+                    </div>
+                </div>
+            </div>
+            <!-- Export and compare buttons for Plan de Ahorro -->
+            <div class="export-wrapper">
+                <button id="ahorro-save-snapshot" class="export-btn">Guardar escenario</button>
+                <button id="ahorro-open-compare" class="export-btn">Comparar</button>
+                <!-- Button to trigger financing pre‑approval (formerly Chequear beneficios) -->
+                <button id="benefit-btn" class="export-btn">Preaprobación de financiamiento</button>
+                <!-- Button to close the current operation and reset all benefits (formerly Resetear beneficios) -->
+                <button id="reset-benefits-btn" class="export-btn">Cierre de operación</button>
+                <button id="export-ahorro-pdf" class="export-btn">Exportar a PDF</button>
+            </div>
+        </section>
+
+        <!-- Financiación Bancaria section -->
+        <section id="bancario-section" style="display: none;">
+            <h2>Financiación Bancaria</h2>
+            <div class="form-container">
+                <!-- Left panel: inputs -->
+                <div class="panel" id="bancario-input-panel">
+                    <h3>Selección</h3>
+                    <label for="bancario-vehicle-select">Vehículo</label>
+                    <select id="bancario-vehicle-select"></select>
+
+                    <h3>Capital</h3>
+                    <label for="bancario-capital-input">Capital a invertir</label>
+                    <input type="number" id="bancario-capital-input" min="0" step="100000" placeholder="Ingrese capital" />
+                    <label>Monto a financiar</label>
+                    <span id="bancario-monto-a-financiar" class="value-display">-</span>
+
+                    <h3>Financiación</h3>
+                    <label for="bancario-system-select">Sistema de financiación</label>
+                    <select id="bancario-system-select">
+                        <option value="fija" selected>Fija (TNA 60%)</option>
+                        <option value="uva">UVA (TNA 15%)</option>
+                    </select>
+                    <label for="bancario-term-select">Cantidad de cuotas</label>
+                    <select id="bancario-term-select">
+                        <option value="">-- Seleccione --</option>
+                        <option value="12">12</option>
+                        <option value="24">24</option>
+                        <option value="36">36</option>
+                        <option value="48">48</option>
+                        <option value="60">60</option>
+                    </select>
+                </div>
+
+                <!-- Right panel: results -->
+                <div class="panel" id="bancario-results-panel">
+                    <h3>Resultados</h3>
+                    <!-- Greeting for Bancario personalised with client name. Will be filled dynamically -->
+                    <div id="bancario-greeting" class="greeting" style="display:none;"></div>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td>Precio del vehículo</td>
+                                <td id="bancario-precio-vehiculo">-</td>
+                            </tr>
+                            <tr>
+                                <td>Inversión a realizar</td>
+                                <td id="bancario-capital-display">-</td>
+                            </tr>
+                            <tr>
+                                <td>Monto a financiar</td>
+                                <td id="bancario-monto-financiar-display">-</td>
+                            </tr>
+                            <!-- New row for the credit issuance cost -->
+                            <tr>
+                                <td>Costo de otorgación de crédito</td>
+                                <td id="bancario-cost-otorgacion-display">$ 4.500.000</td>
+                            </tr>
+                            <tr>
+                                <td><span class="tooltip" data-tooltip="TNA: Tasa Nominal Anual aplicada al sistema de financiación.">TNA</span></td>
+                                <td id="bancario-tna-display">-</td>
+                            </tr>
+                            <tr>
+                                <td>Cuota estimada</td>
+                                <td id="bancario-cuota-estimada-display">-</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h3>Cuotas según plazo</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Plazo (meses)</th>
+                                <th>Cuota</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bancario-cuotas-table">
+                            <tr>
+                                <td>12</td><td>-</td>
+                            </tr>
+                            <tr>
+                                <td>24</td><td>-</td>
+                            </tr>
+                            <tr>
+                                <td>36</td><td>-</td>
+                            </tr>
+                            <tr>
+                                <td>48</td><td>-</td>
+                            </tr>
+                            <tr>
+                                <td>60</td><td>-</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="final-note">
+                        Entrega en 15 días aproximadamente
+                    </div>
+                </div>
+            </div>
+            <!-- Export and compare buttons for Financiación Bancaria -->
+            <div class="export-wrapper">
+                <button id="bancario-save-snapshot" class="export-btn">Guardar escenario</button>
+                <button id="bancario-open-compare" class="export-btn">Comparar</button>
+                <button id="export-bancario-pdf" class="export-btn">Exportar a PDF</button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Comparison modal for Plan de Ahorro vs. Financiación Bancaria -->
+    <div id="compare-modal" class="modal">
+        <div class="modal-backdrop"></div>
+        <div class="modal-card">
+            <div class="modal-header">
+                <!-- Updated modal title to reflect a more professional comparison of financing options -->
+                <h3>Comparador de Financiaciones</h3>
+                <button id="compare-close-btn" class="export-btn">Cerrar</button>
+            </div>
+            <div class="modal-body">
+                <div class="compare-grid">
+                    <!-- Results for the Plan de Ahorro snapshot will be injected here -->
+                    <div id="compare-ahorro"></div>
+                    <!-- Results for the Financiación Bancaria snapshot will be injected here -->
+                    <div id="compare-bancario"></div>
+                </div>
+                <div class="snapshot-toolbar">
+                    <select id="snapshot-selector"></select>
+                    <button id="snapshot-load-btn" class="export-btn">Cargar snapshot</button>
+                    <button id="snapshot-delete-btn" class="export-btn">Eliminar snapshot</button>
+                    <button id="compare-export-pdf-btn" class="export-btn">Exportar PDF</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Preapproval modal: shown when the user clicks on Preaprobación de financiamiento. This uses
+         the same modal styling as the comparison modal. A countdown timer displays the remaining
+         time (24 horas) for the special benefits. -->
+    <div id="preapproval-modal" class="modal" style="display:none;">
+        <div class="modal-backdrop"></div>
+        <div class="modal-card" style="max-width: 500px;">
+            <div class="modal-header">
+                <!-- Increase the font size of the approval headline for greater impact -->
+                <h3 style="color:#198754; margin:0; font-size:2.2rem;">CLIENTE APROBADO</h3>
+            </div>
+            <div class="modal-body" style="text-align:center;">
+                <!-- Enlarge the description text and timer for better visibility -->
+                <p style="font-size:1.5rem;">Se otorgó una carpeta con beneficios especiales</p>
+                <p id="preapproval-timer" style="font-weight:700; color:#c0392b; font-size:2rem;"></p>
+            </div>
+            <div class="modal-footer" style="text-align:right;">
+                <button id="preapproval-close-btn" class="export-btn">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Redirect modal: shown when the user clicks "Continuar con la solicitud".  Displays a
+         short message and simple animation before navigating to the external site.  Hidden by default. -->
+    <div id="redirect-modal" class="modal" style="display:none;">
+        <div class="modal-backdrop"></div>
+        <div class="modal-card" style="max-width:400px; text-align:center;">
+            <div class="modal-body" style="padding:1.5rem;">
+                <p style="font-size:1.5rem; margin-bottom:1rem; color:#198754; font-weight:600;">Continuando con la solicitud…</p>
+                <!-- Simple spinner animation -->
+                <div class="redirect-spinner" style="margin:0 auto 0.5rem auto;"></div>
+                <p style="color:#c0392b; font-size:1.1rem;">Redirigiendo…</p>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Hidden print container for comparison PDF export -->
+    <section id="compare-print" style="display: none;"></section>
+
+    <!-- Admin login modal -->
+    <div id="admin-login-modal" class="modal" style="display:none;">
+        <div class="modal-backdrop"></div>
+        <div class="modal-card" style="max-width: 400px;">
+            <div class="modal-header">
+                <h3>Ingreso de administrador</h3>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="admin-user">Usuario</label>
+                    <input type="text" id="admin-user" />
+                </div>
+                <div class="form-group">
+                    <label for="admin-pass">Contraseña</label>
+                    <input type="password" id="admin-pass" />
+                </div>
+                <div id="admin-error" class="error-message" style="color:red; margin-top:0.5rem;"></div>
+                <div style="margin-top:1rem; display:flex; justify-content:flex-end; gap:0.5rem;">
+                    <button id="admin-cancel-btn" class="export-btn">Cancelar</button>
+                    <button id="admin-login-btn" class="export-btn">Ingresar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin section for listing clients -->
+    <section id="admin-section" style="display:none; margin:1rem;">
+        <h2>Listado de clientes</h2>
+        <div class="panel">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>DNI</th>
+                        <th>Localidad</th>
+                        <th>Teléfono</th>
+                        <th>Email</th>
+                        <th>Fecha</th>
+                        <th>Atendido por</th>
+                        <th>Estado</th>
+                    <th>Tipo de venta</th>
+                    <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody id="admin-client-table">
+                    <!-- Client rows injected by JS -->
+                </tbody>
+            </table>
+        </div>
+        <!-- Summary of clients by vendor will be rendered here -->
+        <div id="admin-summary" style="margin-top:1rem; font-weight: 600;"></div>
+        <div style="margin-top:1rem; display:flex; gap:0.5rem; flex-wrap:wrap;">
+            <button id="admin-add-client-btn" class="export-btn">Agregar cliente</button>
+            <button id="export-clients-csv" class="export-btn">Exportar CSV</button>
+            <button id="export-clients-pdf" class="export-btn">Exportar PDF</button>
+            <button id="admin-close-btn" class="export-btn">Cerrar</button>
+        </div>
+    </section>
+
+    <!-- Vendor section for viewing and updating own clients -->
+    <section id="vendor-section" style="display:none; margin:1rem;">
+        <h2>Mis clientes</h2>
+        <div class="panel">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>DNI</th>
+                        <th>Localidad</th>
+                        <th>Teléfono</th>
+                        <th>Email</th>
+                        <th>Fecha</th>
+                        <th>Estado</th>
+                        <th>Tipo de venta</th>
+                    </tr>
+                </thead>
+                <tbody id="vendor-client-table">
+                    <!-- Vendor client rows injected by JS -->
+                </tbody>
+            </table>
+        </div>
+        <div style="margin-top:1rem; display:flex; gap:0.5rem;">
+            <button id="vendor-close-btn" class="export-btn">Cerrar</button>
+        </div>
+    </section>
+
+    <!-- Hidden print container for admin PDF export -->
+    <section id="admin-print" style="display:none;"></section>
+
+    <!-- Modal for adding a new client from the admin panel -->
+    <div id="add-client-modal" class="modal" style="display:none;">
+        <div class="modal-backdrop"></div>
+        <div class="modal-card" style="max-width: 500px;">
+            <div class="modal-header">
+                <h3>Agregar cliente</h3>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="add-client-first-name">Nombre *</label>
+                    <input type="text" id="add-client-first-name" />
+                    <span id="add-client-first-name-error" class="error-message"></span>
+                </div>
+                <div class="form-group">
+                    <label for="add-client-last-name">Apellido *</label>
+                    <input type="text" id="add-client-last-name" />
+                    <span id="add-client-last-name-error" class="error-message"></span>
+                </div>
+                <div class="form-group">
+                    <label for="add-client-dni">DNI *</label>
+                    <input type="text" id="add-client-dni" pattern="\d{7,10}" />
+                    <span id="add-client-dni-error" class="error-message"></span>
+                </div>
+                <div class="form-group">
+                    <label for="add-client-localidad">Localidad *</label>
+                    <input type="text" id="add-client-localidad" />
+                    <span id="add-client-localidad-error" class="error-message"></span>
+                </div>
+                <div class="form-group">
+                    <label for="add-client-telefono">Número de teléfono</label>
+                    <input type="tel" id="add-client-telefono" />
+                    <span id="add-client-telefono-error" class="error-message"></span>
+                </div>
+                <div class="form-group">
+                    <label for="add-client-email">Correo electrónico</label>
+                    <input type="email" id="add-client-email" />
+                    <span id="add-client-email-error" class="error-message"></span>
+                </div>
+                <div class="form-group">
+                    <label for="add-client-attended-by">Atendido por</label>
+                    <select id="add-client-attended-by"></select>
+                </div>
+                <div id="add-client-error" class="error-message" style="color:red;"></div>
+                <div style="display:flex; gap:0.5rem; justify-content:flex-end; margin-top:1rem;">
+                    <button id="add-client-cancel-btn" class="export-btn">Cancelar</button>
+                    <button id="add-client-save-btn" class="export-btn">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Application script -->
+    <script src="js/app.js"></script>
+
+    <!-- Login modal. Displayed on page load until a user authenticates. -->
+    <div id="login-modal" class="modal" style="display:none;">
+        <div class="modal-backdrop"></div>
+        <div class="modal-card" style="max-width: 400px;">
+            <div class="modal-header">
+                <h3>Ingresar al sistema</h3>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="login-username">Usuario</label>
+                    <input type="text" id="login-username" />
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Contraseña</label>
+                    <input type="password" id="login-password" />
+                </div>
+                <div id="login-error" class="error-message" style="color:red;"></div>
+                <div style="display:flex; gap:0.5rem; justify-content:flex-end; margin-top:1rem;">
+                    <button id="login-btn" class="export-btn">Ingresar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
