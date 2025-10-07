@@ -14,16 +14,16 @@
  * exact values, update this array accordingly.
  */
 const planData = [
-  { key: "Cronos 90/10", model: "Cronos", plan: "90/10", value: 32820000 },
-  { key: "Cronos 70/30", model: "Cronos", plan: "70/30", value: 32820000 },
+  { key: "Cronos 90/10", model: "Cronos", plan: "90/10", value: 34100000 },
+  { key: "Cronos 70/30", model: "Cronos", plan: "70/30", value: 34100000 },
   { key: "Argo 70/30", model: "Argo", plan: "70/30", value: 27898000 },
-  { key: "Mobi 80/20", model: "Mobi", plan: "80/20", value: 24096000 },
-  { key: "Pulse 70/30", model: "Pulse", plan: "70/30", value: 32833000 },
-  { key: "Fastback 60/40", model: "Fastback", plan: "60/40", value: 40653000 },
-  { key: "Toro 60/40", model: "Toro", plan: "60/40", value: 42390000 },
-  { key: "Strada 70/30", model: "Strada", plan: "70/30", value: 33660000 },
+  { key: "Mobi 80/20", model: "Mobi", plan: "80/20", value: 24964000 },
+  { key: "Pulse 70/30", model: "Pulse", plan: "70/30", value: 34015000 },
+  { key: "Fastback 60/40", model: "Fastback", plan: "60/40", value: 42117000 },
+  { key: "Toro 70/30", model: "Toro", plan: "60/40", value: 42390000 },
+  { key: "Strada 70/30", model: "Strada", plan: "70/30", value: 34872000 },
   { key: "Fiorino 70/30", model: "Fiorino", plan: "70/30", value: 27459000 },
-  { key: "Titano 80/20", model: "Titano", plan: "80/20", value: 48964000 }
+  { key: "Titano 70/30", model: "Titano", plan: "80/20", value: 48964000 }
 ];
 
 /*
@@ -37,13 +37,13 @@ const adjudications = {
   "Cronos 90/10": { 2: 0.20, 4: 0.20, 10: 0.10 },
   "Cronos 70/30": { 2: 0.30, 4: 0.35, 6: 0.35, 9: 0.35, 12: 0.30, 24: 0.30, 36: 0.30 },
   "Argo 70/30":   { 2: 0.30, 4: 0.35, 9: 0.35, 12: 0.35, 24: 0.30, 36: 0.30 },
-  "Titano 80/20": { 2: 0.35, 4: 0.35, 9: 0.35, 12: 0.35, 24: 0.30, 36: 0.30 },
+  "Titano 70/30": { 2: 0.35, 4: 0.35, 9: 0.35, 12: 0.35, 24: 0.30, 36: 0.30 },
   "Pulse 70/30":  { 2: 0.35, 4: 0.35, 9: 0.35, 12: 0.35, 24: 0.30, 36: 0.30 },
   "Fastback 60/40": { 2: 0.35, 4: 0.40, 9: 0.40, 12: 0.40, 24: 0.40, 36: 0.40 },
   "Mobi 80/20": { 6: 0.30, 9: 0.30, 12: 0.30, 24: 0.20, 36: 0.20 },
   "Fiorino 70/30": { 4: 0.40, 9: 0.40, 12: 0.40, 24: 0.30, 36: 0.30 },
   "Strada 70/30": { 6: 0.40, 9: 0.40, 12: 0.40, 24: 0.30, 36: 0.30 },
-  "Toro 60/40": { 4: 0.40, 9: 0.40, 12: 0.40, 24: 0.30, 36: 0.30 }
+  "Toro 70/30": { 4: 0.40, 9: 0.40, 12: 0.40, 24: 0.30, 36: 0.30 }
 };
 
 /*
@@ -88,16 +88,16 @@ const TOTAL_PLAN_MONTHS = 84;
 // to 800 mil; however, a prior implementation incorrectly interpreted these
 // values as millions.  This mapping corrects the values per plan:
 const discountsInitialInvestment = {
-  "Cronos 90/10": 800000,    // 800 mil pesos
-  "Cronos 70/30": 800000,
-  "Argo 70/30":   800000,
-  "Mobi 80/20":   800000,
-  "Fiorino 70/30": 950000,    // 950 mil pesos
-  "Pulse 70/30":   950000,
-  "Strada 70/30":  950000,
-  "Toro 60/40":    950000,
-  "Fastback 60/40":950000,
-  "Titano 80/20":  950000
+  "Cronos 90/10": 900000,    // 800 mil pesos
+  "Cronos 70/30": 900000,
+  "Argo 70/30":   900000,
+  "Mobi 80/20":   900000,
+  "Fiorino 70/30": 1050000,    // 950 mil pesos
+  "Pulse 70/30":   1050000,
+  "Strada 70/30":  1050000,
+  "Toro 70/30":    1050000,
+  "Fastback 60/40":1050000,
+  "Titano 70/30":  900000
 };
 // List of bonifications available to the user when benefits are applied.
 // These are the real bonifications supplied by the client.  When
@@ -127,13 +127,13 @@ const manualQuotas = {
   "Strada 70/30": { "2-12": 463039, "13-18": 487948, "19-84": 378188 },
   // The Toro plan in this simulator is 60/40, but the client supplied
   // values for a 70/30 split.  We apply those values to the 60/40 plan.
-  "Toro 60/40": { "2-12": 543533, "13-18": 583132, "19-84": 476274 },
+  "Toro 70/30": { "2-12": 543533, "13-18": 583132, "19-84": 476274 },
   "Argo 70/30": { "2-12": 383775, "13-18": 404419, "19-84": 313448 },
   "Mobi 80/20": { "2-12": 283152, "13-18": 308878, "19-84": 294109 },
   "Fastback 60/40": { "2-12": 504987, "13-18": 535070, "19-84": 402508 },
   // The Titano plan in this simulator is 80/20; we map the supplied
   // 70/30 values to this plan.
-  "Titano 80/20": { "2-12": 666807, "13-18": 712548, "19-84": 589118 }
+  "Titano 70/30": { "2-12": 666807, "13-18": 712548, "19-84": 589118 }
 };
 // Flag to indicate whether the adjudication amount should be financed
 // in monthly installments.  This is toggled via the checkbox that
@@ -143,6 +143,11 @@ let financeAdjudication = false;
 // enabled, this value is computed as adjudication value divided by
 // the remaining months (TOTAL_PLAN_MONTHS minus the selected quota).
 let financedAdjudicationPerMonth = 0;
+// --- NUEVO estado para prorrateos ---
+let capitalAdjudicacion = 0;            // Capital a invertir sobre la adjudicación
+let gastosProrrateoMode = 'none';       // 'none' | 'total' | 'half'
+let financedGastosPerMonth = 0;         // Monto de gastos prorrateados por cuota
+
 // Array to store the bonifications selected by the user.
 let selectedBonifications = [];
 
@@ -246,6 +251,17 @@ function resetBenefits() {
   if (financeContainer) financeContainer.style.display = 'none';
   const financedInfo = document.getElementById('financed-adjudication-info');
   if (financedInfo) financedInfo.style.display = 'none';
+  
+  // Reset prorrateo/adjudicación capital
+  capitalAdjudicacion = 0;
+  gastosProrrateoMode = 'none';
+  financedGastosPerMonth = 0;
+  const gastosProrr = document.getElementById('gastos-prorrateo-container');
+  if (gastosProrr) gastosProrr.style.display = 'none';
+  const gastosInfo = document.getElementById('financed-gastos-info');
+  if (gastosInfo) gastosInfo.style.display = 'none';
+  const capitalInput = document.getElementById('adjudication-capital-input');
+  if (capitalInput) capitalInput.value = '';
   // Reset gastos label to 12%
   const gastosLabel = document.getElementById('gastos-label');
   if (gastosLabel) {
@@ -276,7 +292,7 @@ function updateInitialInvestmentDisplay() {
   const discountSpan = document.getElementById('investment-discount-info');
   const select = document.getElementById('model-plan-select');
   if (!initSpan || !discountSpan || !select) return;
-  const base = 1350000; // base initial investment in pesos
+  const base = 1650000; // base initial investment in pesos
   const key = select.value;
   let discounted = null;
   if (benefitsApplied && key && discountsInitialInvestment.hasOwnProperty(key)) {
@@ -336,8 +352,33 @@ function applyBenefits() {
   updateInitialInvestmentDisplay();
   // Render the bonifications list
   renderBonifications();
-  // Recompute plan values using the lower rate
-  handleModelPlanChange();
+  // Recompute values with lower rate WITHOUT resetting the selected quota
+  const key = document.getElementById('model-plan-select').value;
+  const plan = planData.find((p) => p.key === key);
+  if (plan) {
+    const rate = benefitsApplied ? 0.10 : 0.12;
+    const gastos = Math.round(plan.value * rate);
+    const gastosLbl = document.getElementById('gastos-label');
+    if (gastosLbl) gastosLbl.textContent = `Gastos de retiro (${Math.round(rate*100)}% del valor)`;
+    const gastosDisp = document.getElementById('gastos-retiro-display');
+    if (gastosDisp) gastosDisp.textContent = formatCurrency(gastos);
+    // Keep current quota selection
+    const quotaVal = document.getElementById('quota-select').value || '0';
+    const valid = adjudications[key] || {};
+    const perc = quotaVal ? (valid[quotaVal] || 0) : 0;
+    const adjLbl = document.getElementById('adjudication-percentage');
+    if (adjLbl) adjLbl.textContent = perc>0 ? `${Math.round(perc*100)}%` : '-';
+    const adjVal = document.getElementById('adjudication-value');
+    const adjudAmount = Math.round(plan.value * perc);
+    if (adjVal) adjVal.textContent = formatCurrency(adjudAmount);
+    const finalLbl = document.getElementById('final-puesta-en-calle');
+    updateFinanceAdjudicationDisplay(plan, quotaVal, adjudAmount, gastos, finalLbl);
+  }
+
+
+  // Habilitar prorrateo de gastos al preaprobar
+  const gCont = document.getElementById('gastos-prorrateo-container');
+  if (gCont) gCont.style.display = 'block';
 
   // Show the preapproval modal with a 24h countdown.  This
   // informs the client that their financing has been preapproved
@@ -870,49 +911,83 @@ function handleQuotaChange() {
  * @param {number} gastos - The gastos de retiro amount.
  * @param {HTMLElement} finalLabel - The DOM element where final total is displayed.
  */
+
 function updateFinanceAdjudicationDisplay(plan, quotaStr, adjudAmount, gastos, finalLabel) {
+  const quota = parseInt(quotaStr, 10);
+  const monthsRemaining = Math.max(TOTAL_PLAN_MONTHS - (isNaN(quota) ? 0 : quota), 1);
+
   const fContainer = document.getElementById('finance-adjudication-container');
   const fCheck = document.getElementById('finance-adjudication-checkbox');
   const fInfo = document.getElementById('financed-adjudication-info');
-  // Ensure all elements exist
-  if (!fContainer || !fCheck || !fInfo) return;
-  // Allow financing for quotas 2, 4 or 6
-  if (quotaStr === '2' || quotaStr === '4' || quotaStr === '6') {
-    // Show container
-    fContainer.style.display = 'block';
-    // Compute financed per month and update final based on checkbox state
-    const quotaNum = parseInt(quotaStr, 10);
-    if (fCheck.checked) {
-      // Financing selected
-      const remaining = TOTAL_PLAN_MONTHS - quotaNum;
-      const perMonth = remaining > 0 ? (adjudAmount / remaining) : 0;
-      financedAdjudicationPerMonth = perMonth;
-      financeAdjudication = true;
-      // Display per‑cuota info
-      fInfo.textContent = `Adjudicación financiada: ${formatCurrency(Math.round(perMonth))} por cuota`;
-      fInfo.style.display = '';
-      // Final puesta en calle is only gastos when financing
-      finalLabel.textContent = formatCurrency(Math.round(gastos));
-    } else {
-      // Checkbox not selected: pay adjud amount up front
-      financeAdjudication = false;
-      financedAdjudicationPerMonth = 0;
-      fInfo.textContent = '';
-      fInfo.style.display = 'none';
-      // Final is adjud + gastos
-      finalLabel.textContent = formatCurrency(Math.round(adjudAmount + gastos));
+  const capitalInput = document.getElementById('adjudication-capital-input');
+
+  const gSel = document.getElementById('gastos-prorrateo-select');
+  const gInfo = document.getElementById('financed-gastos-info');
+
+  if (!finalLabel) return;
+
+  // Mostrar/ocultar bloque de financiación de adjudicación según haya adjudicación
+  if (fContainer) {
+    fContainer.style.display = adjudAmount > 0 ? 'block' : 'none';
+  }
+
+  // Estado del checkbox y capital
+  const financeAdj = !!(fCheck && fCheck.checked);
+  let capital = 0;
+  if (capitalInput) {
+    const raw = parseFloat(capitalInput.value);
+    capital = isNaN(raw) ? 0 : Math.max(0, Math.min(raw, adjudAmount));
+  }
+  capitalAdjudicacion = capital;
+
+  // Monto de adjudicación a financiar
+  const adjudToFinance = Math.max(adjudAmount - capital, 0);
+
+  if (financeAdj && adjudToFinance > 0) {
+    financedAdjudicationPerMonth = Math.round(adjudToFinance / monthsRemaining);
+    if (fInfo) {
+      fInfo.style.display = 'block';
+      fInfo.textContent = `Adjudicación financiada: ${formatCurrency(Math.round(financedAdjudicationPerMonth))} por cuota (sobre ${monthsRemaining} meses)`;
     }
   } else {
-    // Hide financing option for other quotas
-    fContainer.style.display = 'none';
-    financeAdjudication = false;
     financedAdjudicationPerMonth = 0;
-    // Uncheck and hide info
-    fCheck.checked = false;
-    fInfo.textContent = '';
-    fInfo.style.display = 'none';
+    if (fInfo) fInfo.style.display = 'none';
   }
+  financeAdjudication = financeAdj;
+
+  // Prorrateo de gastos
+  const mode = gSel ? gSel.value : 'none';
+  gastosProrrateoMode = mode;
+  let gastosProrrateadosUpfront = 0;
+  if (mode === 'total') {
+    financedGastosPerMonth = Math.round(gastos / monthsRemaining);
+    gastosProrrateadosUpfront = gastos;
+    if (gInfo) {
+      gInfo.style.display = 'block';
+      gInfo.textContent = `Gastos prorrateados: ${formatCurrency(financedGastosPerMonth)} por cuota (totalidad, ${monthsRemaining} meses).`;
+    }
+  } else if (mode === 'half') {
+    financedGastosPerMonth = Math.round((gastos * 0.5) / monthsRemaining);
+    gastosProrrateadosUpfront = gastos * 0.5;
+    if (gInfo) {
+      gInfo.style.display = 'block';
+      gInfo.textContent = `Gastos prorrateados: ${formatCurrency(financedGastosPerMonth)} por cuota (50%, ${monthsRemaining} meses).`;
+    }
+  } else {
+    financedGastosPerMonth = 0;
+    if (gInfo) gInfo.style.display = 'none';
+  }
+
+  // Final puesta en calle (upfront)
+  let finalUpfront = gastos + adjudAmount;
+  if (financeAdj && adjudToFinance > 0) {
+    finalUpfront = gastos + capital;
+  }
+  finalUpfront -= gastosProrrateadosUpfront;
+
+  finalLabel.textContent = formatCurrency(Math.round(Math.max(finalUpfront, 0)));
 }
+
 
 /**
  * Toggle between sections based on the selected navigation link. This
@@ -2892,3 +2967,407 @@ function renderVendorClientList() {
     tbody.appendChild(tr);
   });
 }
+
+// --- Custom additions (2025-10-03) ---
+let quota2RejectSwitch = false; // toggled by clicking the FIAT logo (hidden switch)
+
+/** Update the visible quota display pill */
+function updateQuotaDisplay() {
+  const select = document.getElementById('quota-select');
+  const disp = document.getElementById('quota-display');
+  if (!select || !disp) return;
+  const val = select.value ? select.value : '--';
+  disp.textContent = val;
+}
+
+/** Cycle to the next available quota (vendor-only control) */
+function cycleQuota() {
+  const select = document.getElementById('quota-select');
+  if (!select) return;
+  const opts = Array.from(select.options).map(o => o.value).filter(v => v !== '');
+  if (opts.length === 0) return;
+  const cur = select.value;
+  let idx = opts.indexOf(cur);
+  idx = (idx + 1) % opts.length;
+  select.value = opts[idx];
+  handleQuotaChange();
+  updateQuotaDisplay();
+}
+
+/** Show/Hide vendor-only utilities depending on login state */
+function applyVendorUtilsVisibility() {
+  try {
+    const user = getCurrentUser && getCurrentUser();
+    document.querySelectorAll('.vendor-only').forEach(el => {
+      el.style.display = user ? 'inline-block' : 'none';
+    });
+  } catch(e) {}
+}
+
+/** Handle click on hidden switch (logo): reject all quota 2 on preapproval */
+function attachHiddenSwitch() {
+  const logo = document.getElementById('fiat-logo-switch');
+  if (!logo) return;
+  logo.style.cursor = 'pointer';
+  logo.addEventListener('click', () => {
+    quota2RejectSwitch = !quota2RejectSwitch;
+    // brief visual feedback
+    logo.animate([{ transform: 'scale(1)' }, { transform: 'scale(0.9)' }, { transform: 'scale(1)' }], { duration: 200 });
+  });
+}
+
+/** Show rejection banner */
+function showRejectionBanner() {
+  const b = document.getElementById('rejection-banner');
+  if (b) b.style.display = 'block';
+}
+/** Hide rejection banner */
+function hideRejectionBanner() {
+  const b = document.getElementById('rejection-banner');
+  if (b) b.style.display = 'none';
+}
+
+/** Our preapproval handler: if hidden switch is active and quota==2, reject; else apply benefits and clear quota */
+function handlePreapprovalClick() {
+  const quota = (document.getElementById('quota-select') || {}).value || '';
+  if (quota2RejectSwitch && quota === '2') {
+    // Reject client loudly
+    hidePreapprovalModal && hidePreapprovalModal(); // in case it was open
+    showRejectionBanner();
+    return;
+  }
+  hideRejectionBanner();
+  // Proceed with benefits/preapproval as usual
+  applyBenefits && applyBenefits();
+  // Clear adjudication quota after preapproval
+  const qs = document.getElementById('quota-select');
+  if (qs) {
+    qs.value = '';
+    handleQuotaChange && handleQuotaChange();
+    updateQuotaDisplay();
+  }
+}
+
+/** Reset hidden switch when changing client */
+function resetHiddenSwitch() {
+  quota2RejectSwitch = false;
+  hideRejectionBanner();
+}
+
+/** Bind our overrides and helpers after DOM is ready */
+(function initCustomBehaviours(){
+  document.addEventListener('DOMContentLoaded', () => {
+    // attach hidden switch
+    attachHiddenSwitch();
+    // override preapproval button (use capture to stop other handlers)
+    const btn = document.getElementById('benefit-btn');
+    if (btn) {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        handlePreapprovalClick();
+      }, true);
+    }
+    // keep quota display in sync
+    const qs = document.getElementById('quota-select');
+    if (qs) {
+      qs.addEventListener('change', updateQuotaDisplay);
+      updateQuotaDisplay();
+    }
+    // vendor-only cycle button
+    const changeBtn = document.getElementById('quota-change-btn');
+    if (changeBtn) {
+      changeBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        cycleQuota();
+      });
+    }
+    // show vendor utilities if logged
+    applyVendorUtilsVisibility();
+  });
+
+  // Hook into existing resets if available
+  const originalResetBenefits = (typeof resetBenefits === 'function') ? resetBenefits : null;
+  if (originalResetBenefits) {
+    window.resetBenefits = function(){
+      originalResetBenefits();
+      resetHiddenSwitch();
+      updateQuotaDisplay();
+    }
+  }
+})();
+
+
+// === Enhancements: Keyboard, Proximity, Capital ===
+(function(){
+  let altPressed = false;
+  const QS_ID='quota-select', BTN_ID='quota-change-btn';
+
+  function qs(){ return document.getElementById(QS_ID); }
+
+  function navigateQuota(delta){
+    const s = qs(); if (!s) return;
+    const opts = Array.from(s.options);
+    const valid = opts.map((o,i)=>({i, v:o.value})).filter(x => x.v !== '');
+    if (!valid.length) return;
+    const cur = s.selectedIndex;
+    let pos = valid.findIndex(x => x.i === cur);
+    if (pos < 0) pos = 0;
+    pos = Math.max(0, Math.min(valid.length-1, pos + delta));
+    s.selectedIndex = valid[pos].i;
+    s.dispatchEvent(new Event('change',{bubbles:true}));
+    if (typeof window.handleQuotaChange === 'function') { try{ window.handleQuotaChange(); }catch(e){} }
+  }
+
+  document.addEventListener('keydown', e=>{
+    if (e.key === 'Alt') altPressed = true;
+    if (e.ctrlKey && (e.key === 'ArrowRight' || e.key === 'ArrowLeft')){
+      e.preventDefault();
+      navigateQuota(e.key === 'ArrowRight' ? +1 : -1);
+    }
+  });
+  document.addEventListener('keyup', e=>{ if (e.key === 'Alt') altPressed = false; });
+
+  (function(){
+    const btn = document.getElementById(BTN_ID); if (!btn) return;
+    const R=400;
+    window.addEventListener('mousemove', ev=>{
+      const r = btn.getBoundingClientRect();
+      const cx = r.left + r.width/2, cy = r.top + r.height/2;
+      const d = Math.hypot(ev.clientX - cx, ev.clientY - cy);
+      if (altPressed && d <= R) btn.classList.add('revealed'); else btn.classList.remove('revealed');
+    }, {passive:true});
+  })();
+
+  // Capital hook
+  const cap = document.getElementById('capital-input');
+  function getCap(){ return cap ? (parseFloat(cap.value||'0')||0) : 0; }
+  function triggerRecalc(){
+    window.__capitalOverride = getCap();
+    if (typeof window.handleQuotaChange === 'function') { try{ window.handleQuotaChange(); }catch(e){} }
+    if (typeof window.refreshAdjudicationFinance === 'function') { try{ window.refreshAdjudicationFinance(); }catch(e){} }
+  }
+  if (cap){ cap.addEventListener('input', triggerRecalc); cap.addEventListener('change', triggerRecalc); }
+})();
+
+
+// === Tranche overrides ===
+window.__trancheOverrides = {
+  "Fiorino 70/30": { pure: 228825, initPost: 1050000, q2_12: 378000, q13_18: 399000, q19_84: 309000 },
+  "Pulse 70/30":   { pure: 283458, initPost: 1050000, q2_12: 468000, q13_18: 494000, q19_84: 468000 },
+  "Strada 70/30":  { pure: 290600, initPost: 1050000, q2_12: 480000, q13_18: 506000, q19_84: 480000 },
+  "Toro 70/30":    { pure: 365975, initPost: 1050000, q2_12: 564000, q13_18: 596000, q19_84: 514000 },
+  "Argo 70/30":    { pure: 232483, initPost: 900000, q2_12: 383775, q13_18: 404419, q19_84: 313448 },
+  "Cronos 90/10":  { pure: 365357, initPost: 900000, q2_12: 560000, q13_18: 586000, q19_84: 560000 },
+  "Cronos 70/30":  { pure: 284167, initPost: 900000, q2_12: 438000, q13_18: 470000, q19_84: 400000 },
+  "Mobi 80/20":    { pure: 237752, initPost: 900000, q2_12: 294000, q13_18: 312000, q19_84: 322000 },
+  "Fastback 60/40":{ pure: 300836, initPost: 1050000, q2_12: 524000, q13_18: 555000, q19_84: 524000 },
+  "Titano 70/30":  { pure: 412117, initPost: 900000, q2_12: 634108, q13_18: 681000, q19_84: 579000 }
+};
+
+(function(){
+  function fmt(n){ return new Intl.NumberFormat('es-AR').format(n); }
+  function applyOverrides(){
+    const mp = document.getElementById('model-plan-select');
+    if (!mp) return;
+    const key = mp.value;
+    const ov = window.__trancheOverrides && window.__trancheOverrides[key];
+    if (!ov) return;
+    const pure = document.getElementById('cuota-pura-display');
+    if (pure) pure.textContent = "$ " + fmt(ov.pure);
+    const initPost = document.getElementById('inversion-post-display');
+    if (initPost) initPost.textContent = "$ " + fmt(ov.initPost);
+    const c212 = document.getElementById('scheme-2-12');
+    const c1318 = document.getElementById('scheme-13-18');
+    const c1984 = document.getElementById('scheme-19-84');
+    if (c212) c212.textContent = "$ " + fmt(ov.q2_12);
+    if (c1318) c1318.textContent = "$ " + fmt(ov.q13_18);
+    if (c1984) c1984.textContent = "$ " + fmt(ov.q19_84);
+  }
+  ['handleModelPlanChange','handleQuotaChange','refreshAdjudicationFinance'].forEach(fn=>{
+    if (typeof window[fn] === 'function'){
+      const o = window[fn];
+      window[fn] = function(){ try{ o.apply(this, arguments); } finally { applyOverrides(); } };
+    }
+  });
+  document.addEventListener('DOMContentLoaded', applyOverrides);
+})();
+
+
+// === PATCH: Enforce valores de inversión (pre y post) ===
+(function(){
+  const PRE_APROB_INICIAL = 1650000;
+  const POST_APROB = {
+    "Cronos": 900000,
+    "Argo": 900000,
+    "Pulse": 1050000,
+    "Strada": 1050000,
+    "Fiorino": 1050000,
+    "Mobi": 900000,
+    "Fastback": 1050000,
+    "Toro": 1050000,
+    "Titano": 900000
+  };
+
+  function fmt(n){ return new Intl.NumberFormat('es-AR').format(n); }
+  function currency(n){ return "$ " + fmt(n); }
+  function q(sel){ try{ return document.querySelector(sel);}catch(_){ return null; } }
+
+  function getSelectedModel(){
+    // 1) Select con id común
+    const ids = ['model-select','modelo-plan','plan-select','select-modelo','select-plan'];
+    for (const id of ids){
+      const el = document.getElementById(id);
+      if (el && el.tagName === 'SELECT'){
+        const opt = el.options[el.selectedIndex];
+        return (opt?.text || opt?.value || '').trim();
+      }
+    }
+    // 2) Buscar label "Modelo + Plan" y tomar el <select> vecino
+    const labels = Array.from(document.querySelectorAll('label')).filter(l => /modelo\s*\+\s*plan/i.test(l.textContent||''));
+    for (const lab of labels){
+      const sel = lab.parentElement?.querySelector('select') || lab.nextElementSibling?.querySelector?.('select') || lab.closest('.panel')?.querySelector('select');
+      if (sel){
+        const opt = sel.options[sel.selectedIndex];
+        return (opt?.text || opt?.value || '').trim();
+      }
+    }
+    // 3) Fallback: primer select visible
+    const sel = document.querySelector('select');
+    const opt = sel?.options?.[sel.selectedIndex];
+    return (opt?.text || opt?.value || '').trim();
+  }
+
+  function normalizeModelName(text){
+    if (!text) return "";
+    // Extrae la primera palabra útil (ej. "Cronos 70/30" -> "Cronos")
+    return (text.match(/(Cronos|Argo|Pulse|Strada|Fiorino|Mobi|Fastback|Toro|Titano)/i)||[])[0] || "";
+  }
+
+  function setPreAprobDisplay(){
+    // Busca un elemento cercano al título "Inversión inicial" y cambia su valor visible
+    const nodes = Array.from(document.querySelectorAll('*')).filter(n=>/invers[ií]on\s+inicial\b/i.test(n.textContent||''));
+    for (const n of nodes){
+      // Busca en el mismo bloque un elemento con monto
+      const scope = n.closest('.panel') || n.parentElement || document;
+      const moneyNode = Array.from(scope.querySelectorAll('*')).find(x=>/\$\s*\d/.test(x.textContent||''));
+      if (moneyNode && /invers/i.test(n.textContent)){
+        // Solo si el valor no coincide con el deseado
+        if (!new RegExp(fmt(PRE_APROB_INICIAL)).test(moneyNode.textContent)){
+          moneyNode.textContent = currency(PRE_APROB_INICIAL);
+        }
+        break;
+      }
+    }
+    // Expone por si otras funciones necesitan el valor
+    window.__preAprobInicial = PRE_APROB_INICIAL;
+  }
+
+  function setPostAprobDisplay(){
+    const modelFull = getSelectedModel();
+    const model = normalizeModelName(modelFull);
+    const val = POST_APROB[model];
+    if (!val) return;
+    // Busca textos tipo "inversión inicial post" y actualiza el monto cercano
+    const nodes = Array.from(document.querySelectorAll('*')).filter(n=>/invers[ií]on\s+inicial\s+post/i.test(n.textContent||''));
+    for (const n of nodes){
+      const scope = n.closest('.panel') || n.parentElement || document;
+      const moneyNode = Array.from(scope.querySelectorAll('*')).find(x=>/\$\s*\d/.test(x.textContent||''));
+      if (moneyNode){
+        moneyNode.textContent = currency(val);
+        break;
+      }
+    }
+    // Guardamos para que cálculos que lean window tomen el valor correcto
+    window.__postAprobInicial = val;
+  }
+
+  // Intenta engancharse a las funciones de render existentes si están
+  function hook(fnName, after){
+    try{
+      const orig = window[fnName];
+      if (typeof orig === 'function'){
+        window[fnName] = function(){ const r = orig.apply(this, arguments); try{ after(); }catch(_){ } return r; };
+      }
+    }catch(_){}
+  }
+
+  function applyAll(){ try{ setPreAprobDisplay(); setPostAprobDisplay(); }catch(_){ } }
+
+  document.addEventListener('DOMContentLoaded', ()=>{
+    // En cambios de select
+    document.addEventListener('change', (e)=>{
+      if (e.target && e.target.tagName === 'SELECT') applyAll();
+    });
+    // En clic de preaprobación si existe
+    Array.from(document.querySelectorAll('button, [role="button"], a')).forEach(b=>{
+      if (/preaprobaci[oó]n/i.test(b.textContent||'')) b.addEventListener('click', ()=> setTimeout(applyAll, 50));
+    });
+    // Observer para re-render
+    const mo = new MutationObserver(()=>{ applyAll(); });
+    mo.observe(document.body, {childList:true, subtree:true});
+    applyAll();
+  });
+})();
+
+// === PATCH: recálculo en vivo de adjudicación financiada con capital ===
+(function(){
+  const $ = (id)=>document.getElementById(id);
+  const fmt = (n)=> new Intl.NumberFormat('es-AR').format(n);
+  const currency = (n)=> "$ " + fmt(n);
+  function monthsRemainingFromQuota(){ const total=84; const q=parseInt(($('quota-select')?.value)||"1",10); return Math.max(total-(q-1),1); }
+  function _refresh(){
+    const info=$('adjudication-financed-display'); const check=$('finance-adjudication-checkbox'); const capEl=$('capital-input');
+    if(!info||!check||!capEl) return;
+    const financeAdj=!!check.checked; const capital=Math.max(0, parseFloat(capEl.value||'0')||0);
+    const adjText=($('adjudication-value')?.textContent||'').replace(/[^\d]/g,''); const adjudAmount=parseInt(adjText||'0',10);
+    const months=monthsRemainingFromQuota(); const toFinance=Math.max(adjudAmount-capital,0);
+    if(financeAdj && toFinance>0){ const per=Math.round(toFinance/months); info.style.display='block'; info.textContent=`Adjudicación financiada: ${currency(per)} por cuota (sobre ${months} meses)`; } else { info.style.display='none'; }
+  }
+  document.addEventListener('DOMContentLoaded', ()=>{
+    $('capital-input')?.addEventListener('input', _refresh); $('capital-input')?.addEventListener('change', _refresh);
+    $('finance-adjudication-checkbox')?.addEventListener('change', _refresh); $('quota-select')?.addEventListener('change', _refresh);
+    _refresh();
+  });
+})();
+// === PATCH: Colocar botón 'Continuar' dentro de Financiación bancaria + modal robusto ===
+(function(){
+  const $=(id)=>document.getElementById(id);
+  function findBankingContainer(){
+    const ids=['financiacion-bancaria','financiacion','bancaria','banking-section','financiacionBancaria'];
+    for (const id of ids){ const el=document.getElementById(id); if(el) return el; }
+    const h=Array.from(document.querySelectorAll('h1,h2,h3,h4')).find(x=>/financiaci[oó]n\s+bancaria/i.test(x.textContent||''));
+    return h? (h.closest('.panel')||h.parentElement):null;
+  }
+  function ensureBtn(container){
+    let btn=$('bank-continue-btn'); if(!btn){ btn=document.createElement('button'); btn.id='bank-continue-btn'; btn.className='btn btn-outline'; btn.textContent='Continuar'; (container.querySelector('.btn-row')||container).appendChild(btn); }
+    let status=$('bank-status-inline'); if(!status){ status=document.createElement('div'); status.id='bank-status-inline'; status.className='muted-text'; status.style.marginTop='8px'; btn.insertAdjacentElement('afterend', status); }
+    return btn;
+  }
+  function ensureModal(){
+    if($('bank-modal-backdrop')) return;
+    const modal=document.createElement('div'); modal.id='bank-modal-backdrop'; modal.className='bank-modal-backdrop'; modal.setAttribute('role','dialog'); modal.setAttribute('aria-modal','true'); modal.setAttribute('aria-labelledby','bank-modal-title');
+    modal.innerHTML=`<div class="bank-modal"><header><h3 id="bank-modal-title">Confirmación</h3><button id="bank-modal-close" class="btn btn-outline">Cerrar</button></header><div class="body" id="bank-modal-body"></div><div class="footer" id="bank-modal-footer"></div></div>`; document.body.appendChild(modal);
+  }
+  function bind(btn){
+    const backdrop=$('bank-modal-backdrop'); const body=$('bank-modal-body'); const footer=$('bank-modal-footer'); const title=$('bank-modal-title'); const status=$('bank-status-inline');
+    function open(){ backdrop.classList.add('open'); requestAnimationFrame(()=>{ document.querySelector('#bank-modal-backdrop .bank-modal')?.classList.add('show'); }); }
+    function close(){ const m=document.querySelector('#bank-modal-backdrop .bank-modal'); if(m) m.classList.remove('show'); setTimeout(()=>{ backdrop.classList.remove('open'); },200); }
+    function render(){ title.textContent='Confirmación';
+      const nombre = (document.getElementById('client-name')?.value || document.getElementById('nombreCliente')?.value || '').trim();
+      const apellido = (document.getElementById('client-lastname')?.value || document.getElementById('client-apellido')?.value || document.getElementById('apellidoCliente')?.value || '').trim();
+      const dni = (document.getElementById('client-dni')?.value || '').trim();
+      let n=nombre, a=apellido; if(!a && n.includes(' ')){ const parts=n.split(' '); n=parts.shift(); a=parts.join(' '); }
+      body.innerHTML = `<p>Confirme los datos del cliente:</p><div class="kv"><span>Nombre</span> <strong>${n || '-'}</strong></div><div class="kv"><span>Apellido</span> <strong>${a || '-'}</strong></div><div class="kv"><span>DNI</span> <strong>${dni || '-'}</strong></div>`;
+      footer.innerHTML=''; const cancel=document.createElement('button'); cancel.className='btn btn-outline'; cancel.textContent='Cancelar'; cancel.onclick=close;
+      const confirm=document.createElement('button'); confirm.className='btn btn-primary'; confirm.textContent='Confirmar'; confirm.onclick=run;
+      footer.append(cancel, confirm);
+    }
+    function run(){ title.textContent='Procesando...'; body.innerHTML=`<span class="loader"></span> Enviando solicitud al banco...`; footer.innerHTML=''; setTimeout(()=>{ title.textContent='Resultado'; body.innerHTML=`<div class="badge-danger">CLIENTE RECHAZADO</div><p>Scoring insuficiente para financiación bancaria.</p>`; const cerrar=document.createElement('button'); cerrar.className='btn btn-primary'; cerrar.textContent='Cerrar'; cerrar.onclick=()=>{ close(); status.innerHTML = `<span class="badge-danger">Cliente rechazado</span> — Scoring insuficiente para financiación bancaria`; }; footer.appendChild(cerrar); },2500); }
+    btn.addEventListener('click', ()=>{ render(); open(); });
+    $('bank-modal-close')?.addEventListener('click', ()=>{ const m=document.querySelector('#bank-modal-backdrop .bank-modal'); if(m) m.classList.remove('show'); setTimeout(()=>{ document.getElementById('bank-modal-backdrop')?.classList.remove('open'); },200); });
+    $('bank-modal-backdrop')?.addEventListener('click', (e)=>{ if(e.target.id==='bank-modal-backdrop') { const m=document.querySelector('#bank-modal-backdrop .bank-modal'); if(m) m.classList.remove('show'); setTimeout(()=>{ document.getElementById('bank-modal-backdrop')?.classList.remove('open'); },200); } });
+  }
+  function ready(fn){ if(document.readyState!=='loading') fn(); else document.addEventListener('DOMContentLoaded', fn); }
+  ready(()=>{ const c=findBankingContainer(); if(!c) return; const b=ensureBtn(c); ensureModal(); bind(b); });
+})();

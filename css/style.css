@@ -713,3 +713,67 @@ table td {
     border: 1px solid #cccccc !important;
   }
 }
+/* --- Custom additions (2025-10-03) --- */
+.quota-row { display:flex; align-items:center; gap:0.5rem; }
+.stealth-select {
+  /* Keep in DOM for logic, but hide UI affordances */
+  opacity: 0; position: absolute; width: 0; height: 0; pointer-events: none;
+}
+.quota-display {
+  padding: 0.45rem 0.6rem;
+  border: 1px dashed var(--border-color);
+  border-radius: 4px;
+  background-color: var(--panel-background);
+  min-width: 3rem;
+  text-align: center;
+  font-weight: 600;
+  color: var(--secondary-color);
+}
+.small-btn { padding: 0.4rem 0.6rem; font-size: 0.85rem; }
+.vendor-only { display: none; } /* shown when user logged in */
+.rejection-banner {
+  background-color: #ffe6e6;
+  color: #b00020;
+  border: 2px solid #b00020;
+  font-weight: 900;
+  text-align: center;
+  padding: 0.8rem;
+  margin-bottom: 0.8rem;
+  border-radius: 6px;
+  font-size: 1.4rem;
+  letter-spacing: 1px;
+}
+
+
+/* Switch style */
+.switch{position:relative;display:inline-block;width:46px;height:26px;vertical-align:middle;}
+.switch-input{opacity:0;width:0;height:0;position:absolute;}
+.switch-label{position:absolute;cursor:pointer;inset:0;background:#cfd4da;border-radius:999px;transition:background .2s ease;}
+.switch-label::after{content:"";position:absolute;width:20px;height:20px;left:3px;top:3px;background:#fff;border-radius:50%;box-shadow:0 1px 3px rgba(0,0,0,.25);transition:transform .2s ease;}
+.switch-input:checked + .switch-label{background:#2e7d32;}
+.switch-input:checked + .switch-label::after{transform:translateX(20px);}
+
+.form-row{display:flex;align-items:center;gap:.6rem;margin:.35rem 0;}
+.finance-row{justify-content:space-between;}
+
+.capital-input-group{display:inline-flex;align-items:center;border:1px solid rgba(0,0,0,.15);border-radius:6px;padding:2px 8px;}
+.capital-input-group .prefix{opacity:.8;margin-right:4px;}
+#capital-input{width:140px;border:0;outline:0;background:transparent;font-weight:600;}
+#capital-input::-webkit-outer-spin-button,#capital-input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
+#capital-input[type=number]{-moz-appearance:textfield;}
+
+/* Hidden 'Cambiar' button default, visible only when .revealed */
+#quota-change-btn{opacity:0;pointer-events:none;transition:opacity .15s ease;}
+#quota-change-btn.revealed{opacity:1;pointer-events:auto;}
+
+/* -- Bank Modal (conflict-free) -- */
+.bank-modal-backdrop{position:fixed;inset:0;background:rgba(12,10,24,.35);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;z-index:1000}
+.bank-modal-backdrop.open{display:flex}
+.bank-modal{background:#fff;border-radius:12px;max-width:560px;width:92%;padding:16px;border:1px solid rgba(0,0,0,.1);box-shadow:0 10px 30px rgba(0,0,0,.25);transform:translateY(8px) scale(.98);opacity:0;transition:transform .2s ease,opacity .2s ease}
+.bank-modal.show{transform:translateY(0) scale(1);opacity:1}
+.bank-modal header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.bank-modal h3{margin:0;font-size:18px}
+.bank-modal .footer{display:flex;gap:10px;justify-content:flex-end;margin-top:12px}
+.badge-danger{display:inline-flex;align-items:center;gap:8px;background:#fde7ea;color:#b00020;border:1px solid #f6c8d0;border-radius:999px;padding:4px 10px;font-weight:700}
+.loader{width:18px;height:18px;border:3px solid #e0e0e0;border-top-color:#7b1fa2;border-radius:50%;animation:spin 1s linear infinite;display:inline-block;vertical-align:middle;margin-right:8px}
+@keyframes spin{to{transform:rotate(360deg)}}
