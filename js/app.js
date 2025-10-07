@@ -20,10 +20,10 @@ const planData = [
   { key: "Mobi 80/20", model: "Mobi", plan: "80/20", value: 24964000 },
   { key: "Pulse 70/30", model: "Pulse", plan: "70/30", value: 34015000 },
   { key: "Fastback 60/40", model: "Fastback", plan: "60/40", value: 42117000 },
-  { key: "Toro 70/30", model: "Toro", plan: "60/40", value: 42390000 },
+  { key: "Toro 70/30", model: "Toro", plan: "70/30", value: 42390000 },
   { key: "Strada 70/30", model: "Strada", plan: "70/30", value: 34872000 },
   { key: "Fiorino 70/30", model: "Fiorino", plan: "70/30", value: 27459000 },
-  { key: "Titano 70/30", model: "Titano", plan: "80/20", value: 48964000 }
+  { key: "Titano 70/30", model: "Titano", plan: "70/30", value: 48964000 }
 ];
 
 /*
@@ -53,15 +53,15 @@ const adjudications = {
  * catalogue prices from the official PDF.
  */
 const vehiclesData = [
-  { model: "Cronos", value: 32820000 },
+  { model: "Cronos", value: 34100000 },
   { model: "Argo", value: 27898000 },
-  { model: "Mobi", value: 24096000 },
-  { model: "Pulse", value: 32833000 },
-  { model: "Fastback", value: 40653000 },
-  { model: "Toro", value: 42390000 },
-  { model: "Strada", value: 33660000 },
+  { model: "Mobi", value: 24964000 },
+  { model: "Pulse", value: 34015000 },
+  { model: "Fastback", value: 42117000 },
+  { model: "Toro", value: 43917000 },
+  { model: "Strada", value: 34872000 },
   { model: "Fiorino", value: 27459000 },
-  { model: "Titano", value: 48964000 }
+  { model: "Titano", value: 49454000 }
 ];
 
 /**
