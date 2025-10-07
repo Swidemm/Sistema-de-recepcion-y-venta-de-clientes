@@ -12,7 +12,7 @@
     <nav>
         <div class="logo">
             <!-- Logo image alongside the system name -->
-            <img src="assets/fiat-logo.svg" alt="FIAT" class="logo-img" />
+            <img src="fiat-logo.svg" alt="FIAT" class="logo-img" id="fiat-logo-switch" />
         <span>Fiat Credit – Sistema de Financiación</span>
         </div>
         <ul class="nav-links">
@@ -98,8 +98,8 @@
                     <span id="gastos-retiro-display" class="value-display">-</span>
 
                     <h3>Adjudicación</h3>
-                    <label for="quota-select">Cuota de adjudicacion</label>
-                    <select id="quota-select"></select>
+                    <label for="quota-select">Cuota de Adjudicación</label>
+                    <div class="quota-row">  <select id="quota-select" class="stealth-select"></select>  <span id="quota-display" class="quota-display">--</span>  <button id="quota-change-btn" class="export-btn vendor-only small-btn" title="Cambiar cuota (oculto al cliente)">Cambiar</button></div>
                     <label>% adjudicación</label>
                     <span id="adjudication-percentage" class="value-display">-</span>
                     <label>Valor de adjudicación ($)</label>
@@ -107,13 +107,23 @@
                     
                     <!-- Financing option for adjudication (shown only for cuota 4 or 6) -->
                     <div id="finance-adjudication-container" style="display:none; margin-top: 0.5rem;">
-                        <label class="finance-label" style="display:flex; align-items:center; gap:0.3rem;">
-                            <input type="checkbox" id="finance-adjudication-checkbox" />
-                            Financiar adjudicación en cuotas
-                        </label>
+                        <div class="form-row finance-row">
+  <span>Financiar adjudicación en cuotas</span>
+  <div class="switch">
+    <input type="checkbox" id="finance-adjudication-checkbox" class="switch-input">
+    <label for="finance-adjudication-checkbox" class="switch-label" aria-label="Financiar adjudicación en cuotas"></label>
+  </div>
+</div>
                         <div id="finance-adjudication-note" class="muted-text" style="margin-top:0.2rem;">
                             SE REQUIERE UN BUEN COMPORTAMIENTO DE PAGO EN TIEMPO Y FORMA.
                         </div>
+<div class="form-row">
+  <label for="capital-input">Capital disponible</label>
+  <div class="capital-input-group">
+    <span class="prefix">$</span>
+    <input id="capital-input" type="number" min="0" step="1000" placeholder="0" />
+  </div>
+</div>
                         <!-- This displays the per‑cuota financed adjudication amount when checked -->
                         <div id="financed-adjudication-info" class="value-display" style="display:none; margin-top:0.2rem;"></div>
                     </div>
@@ -176,7 +186,8 @@
                         </tbody>
                     </table>
 
-                    <div class="final-total">
+                    <div id="rejection-banner" class="rejection-banner" style="display:none;">CLIENTE RECHAZADO</div>
+            <div class="final-total">
                         FINAL PUESTA EN CALLE: <span id="final-puesta-en-calle">-</span>
                     </div>
                     <!-- Preapproval countdown and follow‑up action.  This section is shown when
